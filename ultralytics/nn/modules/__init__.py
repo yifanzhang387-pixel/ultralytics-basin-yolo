@@ -17,6 +17,9 @@ Examples:
     >>> subprocess.run(f"onnxslim {f} {f} && open {f}", shell=True, check=True)  # pip install onnxslim
 """
 
+import torch.nn as nn
+
+from .attention import CoordAtt
 from .block import (
     C1,
     C2,
@@ -107,6 +110,11 @@ from .transformer import (
     TransformerLayer,
 )
 
+# Expose CoordAtt to the existing Ultralytics YAML parser via "nn.CoordAtt".
+# This keeps the first Basin-YOLOv8n-seg-CA version minimally invasive.
+if not hasattr(nn, "CoordAtt"):
+    nn.CoordAtt = CoordAtt
+
 __all__ = (
     "AIFI",
     "C1",
@@ -116,6 +124,7 @@ __all__ = (
     "C3TR",
     "CBAM",
     "CIB",
+    "CoordAtt",
     "DFL",
     "ELAN1",
     "MLP",
