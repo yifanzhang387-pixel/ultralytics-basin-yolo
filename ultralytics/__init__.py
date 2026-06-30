@@ -14,6 +14,13 @@ from ultralytics.utils import ASSETS, SETTINGS
 from ultralytics.utils.checks import check_yolo as checks
 from ultralytics.utils.downloads import download
 
+# Basin-YOLO CA-WIoU branch: enable WIoU-v1 box loss by default.
+# Set ULTRALYTICS_USE_WIOU=0 before import to disable it for ablation/debugging.
+if os.environ.get("ULTRALYTICS_USE_WIOU", "1") != "0":
+    from ultralytics.utils.wiou_patch import apply_wiou_patch
+
+    apply_wiou_patch()
+
 settings = SETTINGS
 
 MODELS = ("YOLO", "YOLOWorld", "YOLOE", "NAS", "SAM", "FastSAM", "RTDETR")
